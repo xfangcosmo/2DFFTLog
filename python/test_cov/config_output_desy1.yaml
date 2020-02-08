@@ -1,0 +1,18 @@
+
+# Specify the output theta range, in [arcmin], and number of theta points
+out_thetamin: 2.5
+out_thetamax: 250
+out_Ntheta: 20
+
+# default c_window width, don't change
+c_window_width: 0.25
+
+# sky coverage, in [deg^2]
+f_sky: 1321.0
+
+# Number of \ell's log-sampled from the original linear-spaced file
+# Must be odd number!
+# Nell_sample: 1201
+Nell_sample: 801
+
+rebin_factor: 10
