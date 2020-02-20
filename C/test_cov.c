@@ -59,7 +59,7 @@ int main(int argc, char const *argv[])
 	float seconds = (float)(end - start) / CLOCKS_PER_SEC;
 	printf("time:%f\n", seconds);
 
-	char outfilename[] = "test_cov_output/newoutput.txt";
+	char outfilename[] = "test_output/newoutput.txt";
 	FILE *OUT = fopen(outfilename, "w");
 	
 	for(i=0; i<Nk; i++) {
