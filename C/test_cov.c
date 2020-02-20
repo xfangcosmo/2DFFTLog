@@ -16,8 +16,8 @@ int main(int argc, char const *argv[])
 	config my_config;
 	my_config.l1 = -0.5;
 	my_config.l2 = -0.5;
-	my_config.nu1 = 1.7;
-	my_config.nu2 = 1.7;
+	my_config.nu1 = 1.01;
+	my_config.nu2 = 1.01;
 	my_config.c_window_width = 0.25;
 	my_config.sys_Flag = 0;
 
