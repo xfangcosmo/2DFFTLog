@@ -20,7 +20,7 @@ def bin_cov_G_real_noPureN(ell,fl, dav1, dav2, config_output):
 	config = {'N_extrap_low': 1000, 'N_extrap_high': 1000,\
 			  'sym_Flag': False, \
 			  'l1': 0, 'l2': 0,\
-			  'nu1': 1.5, 'nu2': 1.5, 'c_window_width': 0.25}
+			  'nu1': 1.01, 'nu2': 1.01, 'c_window_width': 0.25}
 
 	# convert from arcmin to radians
 	out_thetamin, out_thetamax = config_output['out_thetamin']/60./180.*np.pi,config_output['out_thetamax']/60./180.*np.pi
@@ -37,9 +37,6 @@ def bin_cov_G_real_noPureN(ell,fl, dav1, dav2, config_output):
 	davs = {0: 0, 1: 4, 2: 2, 3: 0}
 	config['l1'] = davs[dav1] - 0.5
 	config['l2'] = davs[dav2] - 0.5
-
-	config['nu1'] = 1.45 - config['l1']/2.
-	config['nu2'] = 1.45 - config['l2']/2.
 
 	theta1_out, theta2_out, result_out = twobessel(ell1_extrap, ell2_extrap, fl1l2_extrap, config_pre, config)
 
@@ -91,7 +88,7 @@ def bin_cov_NG_real(ell1, ell2, fl1l2, dav1, dav2, config_output):
 	config = {'N_extrap_low': 1000, 'N_extrap_high': 1000,\
 			  'sym_Flag': False, \
 			  'l1': 0, 'l2': 0,\
-			  'nu1': 1.5, 'nu2': 1.5, 'c_window_width': 0.25}
+			  'nu1': 1.01, 'nu2': 1.01, 'c_window_width': 0.25}
 
 	out_thetamin, out_thetamax = config_output['out_thetamin']/60./180.*np.pi,config_output['out_thetamax']/60./180.*np.pi
 	out_Ntheta = config_output['out_Ntheta']
@@ -106,9 +103,6 @@ def bin_cov_NG_real(ell1, ell2, fl1l2, dav1, dav2, config_output):
 	davs = {0: 0, 1: 4, 2: 2, 3: 0}
 	config['l1'] = davs[dav1] - 0.5
 	config['l2'] = davs[dav2] - 0.5
-
-	config['nu1'] = 1.45 - config['l1']/2.
-	config['nu2'] = 1.45 - config['l2']/2.
 
 	theta1_out, theta2_out, result_out = twobessel(ell1_extrap, ell2_extrap, fl1l2_extrap, config_pre, config)
 

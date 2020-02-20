@@ -63,8 +63,10 @@ int main(int argc, char const *argv[])
 	FILE *OUT = fopen(outfilename, "w");
 	
 	for(i=0; i<Nk; i++) {
-		fprintf(OUT, "%lg %lg", r1[i], result[i][i]/2./pow(M_PI,3)/5000.*41253.*r1[i]);
-		fprintf(OUT, "\n");
+		for(j=0; j<Nk; j++){
+			fprintf(OUT, "%lg %lg %lg", r1[i], r1[j], result[i][j]/2./pow(M_PI,3)/5000.*41253.*sqrt(r1[i]*r1[j]));
+			fprintf(OUT, "\n");
+		}
 	}
 	fclose(OUT);
 	fclose(IN);
