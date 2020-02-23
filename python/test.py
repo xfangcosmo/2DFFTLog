@@ -30,7 +30,7 @@ nu = 1.01
 pk1k2 = np.diag(pk/dlnk)
 
 ################# Test two_sph_bessel ##############
-mytwobessel = twobessel(k, k, pk1k2, nu1=nu, nu2=nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=1000)
+mytwobessel = twobessel(k, k, pk1k2, nu1=nu, nu2=nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0)
 
 t1 = time()
 r1, r2, Fr1r2 = mytwobessel.two_sph_bessel(ell1, ell2)
@@ -59,7 +59,8 @@ subfig2.plot(r1, np.diag(Fr1r2), label='fftlog')
 plt.legend()
 plt.tight_layout()
 plt.show()
-
+# np.savetxt("out.txt", np.c_[r1, np.diag(Fr1r2)])
+# exit()
 
 ################# Test two_sph_bessel_binave ##############
 t1 = time()
@@ -119,4 +120,5 @@ subfig2.plot(r1, np.diag(Fr1r2), label='fftlog')
 plt.legend()
 plt.tight_layout()
 plt.show()
-exit()
+
+np.savetxt("out_twoBessel_binave.txt", np.c_[r1, np.diag(Fr1r2)])

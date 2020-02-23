@@ -14,18 +14,18 @@
 int main(int argc, char const *argv[])
 {
 	config my_config;
-	my_config.l1 = -0.5;
-	my_config.l2 = -0.5;
+	my_config.l1 = 0;
+	my_config.l2 = 0;
 	my_config.nu1 = 1.01;
 	my_config.nu2 = 1.01;
 	my_config.c_window_width = 0.25;
 	my_config.sys_Flag = 0;
 
-	char filename[] = "extra_file.txt";
+	char filename[] = "../python/Pk_test";
 	FILE *IN = fopen(filename, "r");
 
 	// double *ell, *fl;
-	long Nk = 3200;
+	long Nk = 3000;
 	double ell[Nk], fl[Nk];
 
 	long linenum = 0;
@@ -54,21 +54,29 @@ int main(int argc, char const *argv[])
 	}
 
 	clock_t start = clock();
-	twobessel(ell, ell, fk1k2, Nk, Nk, &my_config, r1, r2, result);
+	two_sph_bessel(ell, ell, fk1k2, Nk, Nk, &my_config, r1, r2, result);
 	clock_t end = clock();
 	float seconds = (float)(end - start) / CLOCKS_PER_SEC;
 	printf("time:%f\n", seconds);
 
-	char outfilename[] = "test_output/newoutput.txt";
-	FILE *OUT = fopen(outfilename, "w");
+	// char outfilename[] = "test_output/output.txt";
+	// FILE *OUT = fopen(outfilename, "w");
+	
+	// for(i=0; i<Nk; i++) {
+	// 	for(j=0; j<Nk; j++){
+	// 		fprintf(OUT, "%lg %lg %lg", r1[i], r1[j], result[i][j]);
+	// 		fprintf(OUT, "\n");
+	// 	}
+	// }
+	char outfilename2[]= "test_output/output_diag.txt";
+	FILE *OUT2 = fopen(outfilename2, "w");
 	
 	for(i=0; i<Nk; i++) {
-		for(j=0; j<Nk; j++){
-			fprintf(OUT, "%lg %lg %lg", r1[i], r1[j], result[i][j]/2./pow(M_PI,3)/5000.*41253.*sqrt(r1[i]*r1[j]));
-			fprintf(OUT, "\n");
-		}
+		fprintf(OUT2, "%lg %lg", r1[i], result[i][i]); // only output diagonal elements
+		fprintf(OUT2, "\n");
 	}
-	fclose(OUT);
+	// fclose(OUT);
+	fclose(OUT2);
 	fclose(IN);
 	free(r1);
 	free(r2);

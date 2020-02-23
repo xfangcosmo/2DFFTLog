@@ -100,7 +100,6 @@ class twobessel(object):
 		c_window_array1 = c_window(m, int(self.c_window_width*self.N1//2.) )
 		c_window_array2 = c_window(n, int(self.c_window_width*self.N2//2.) )
 		c_mn_filter = ((c_mn*c_window_array2).T*c_window_array1).T
-
 		return m, n, c_mn
 
 	def two_sph_bessel(self, ell1, ell2):
@@ -118,8 +117,8 @@ class twobessel(object):
 		mat_adjust = np.vstack((mat_right[self.N1//2:,:],mat_right[1:self.N1//2,:]))
 		# print(mat_adjust[0][1])
 		Fy1y2 = ((irfft2(mat_adjust) *np.pi / 16./ self.y2**self.nu2).T / self.y1**self.nu1).T
-
-		return self.y1[self.N_extrap_high:-self.N_extrap_low], self.y2[self.N_extrap_high:-self.N_extrap_low], Fy1y2[self.N_extrap_high:-self.N_extrap_low, self.N_extrap_high:-self.N_extrap_low]
+		# print(Fy1y2)
+		return self.y1[self.N_extrap_high:self.N1-self.N_extrap_low], self.y2[self.N_extrap_high:self.N2-self.N_extrap_low], Fy1y2[self.N_extrap_high:self.N1-self.N_extrap_low, self.N_extrap_high:self.N2-self.N_extrap_low]
 
 	def two_sph_bessel_binave(self, ell1, ell2, binwidth_dlny1, binwidth_dlny2):
 		"""
@@ -129,11 +128,10 @@ class twobessel(object):
 		array y is set as y[:] = 1/x[::-1]
 		"""
 		D = 3
-		alpha_pow = 3
-		s_d_lambda1 = np.exp(D*binwidth_dlny1 -1. ) / D
-		s_d_lambda2 = np.exp(D*binwidth_dlny2 -1. ) / D
-		g1 = g_l_smooth(ell1,self.z1, binwidth_dlny1, alpha_pow) / s_d_lambda1
-		g2 = g_l_smooth(ell2,self.z2, binwidth_dlny2, alpha_pow) / s_d_lambda2
+		s_d_lambda1 = (np.exp(D*binwidth_dlny1) -1. ) / D
+		s_d_lambda2 = (np.exp(D*binwidth_dlny2) -1. ) / D
+		g1 = g_l_smooth(ell1,self.z1, binwidth_dlny1, D) / s_d_lambda1
+		g2 = g_l_smooth(ell2,self.z2, binwidth_dlny2, D) / s_d_lambda2
 
 		mat = np.conj((self.c_mn*(self.x20*self.y20)**(-1j*self.eta_n) * g2).T * (self.x10*self.y10)**(-1j*self.eta_m) * g1).T
 		mat_right = mat[:,self.N2//2:]
@@ -141,7 +139,7 @@ class twobessel(object):
 		# print(mat_adjust[0][1])
 		Fy1y2 = ((irfft2(mat_adjust) *np.pi / 16./ self.y2**(self.nu2)).T / self.y1**(self.nu1)).T
 
-		return self.y1[self.N_extrap_high:-self.N_extrap_low], self.y2[self.N_extrap_high:-self.N_extrap_low], Fy1y2[self.N_extrap_high:-self.N_extrap_low, self.N_extrap_high:-self.N_extrap_low]
+		return self.y1[self.N_extrap_high:self.N1-self.N_extrap_low], self.y2[self.N_extrap_high:self.N2-self.N_extrap_low], Fy1y2[self.N_extrap_high:self.N1-self.N_extrap_low, self.N_extrap_high:self.N2-self.N_extrap_low]
 
 	def two_Bessel_binave(self, ell1, ell2, binwidth_dlny1, binwidth_dlny2):
 		"""
@@ -151,31 +149,19 @@ class twobessel(object):
 		array y is set as y[:] = 1/x[::-1]
 		"""
 		D = 2
-		alpha_pow = 2.5
-		s_d_lambda1 = np.exp(D*binwidth_dlny1 -1. ) / D
-		s_d_lambda2 = np.exp(D*binwidth_dlny2 -1. ) / D
-		g1 = g_l_smooth(ell1,self.z1, binwidth_dlny1, alpha_pow) / s_d_lambda1
-		g2 = g_l_smooth(ell2,self.z2, binwidth_dlny2, alpha_pow) / s_d_lambda2
+		s_d_lambda1 = (np.exp(D*binwidth_dlny1) -1. ) / D
+		s_d_lambda2 = (np.exp(D*binwidth_dlny2) -1. ) / D
+
+		g1 = g_l_smooth(ell1-0.5,self.z1, binwidth_dlny1, D+0.5) / s_d_lambda1
+		g2 = g_l_smooth(ell2-0.5,self.z2, binwidth_dlny2, D+0.5) / s_d_lambda2
 
 		mat = np.conj((self.c_mn*(self.x20*self.y20)**(-1j*self.eta_n) * g2).T * (self.x10*self.y10)**(-1j*self.eta_m) * g1).T
 		mat_right = mat[:,self.N2//2:]
 		mat_adjust = np.vstack((mat_right[self.N1//2:,:],mat_right[1:self.N1//2,:]))
 		# print(mat_adjust[0][1])
-		Fy1y2 = ((irfft2(mat_adjust) *np.pi / 16./ self.y2**(self.nu2)).T / self.y1**(self.nu1)).T
+		Fy1y2 = ((irfft2(mat_adjust) *np.pi / 16./ self.y2**(self.nu2-0.5)).T / self.y1**(self.nu1-0.5)).T
 
-		return self.y1[self.N_extrap_high:-self.N_extrap_low], self.y2[self.N_extrap_high:-self.N_extrap_low], Fy1y2[self.N_extrap_high:-self.N_extrap_low, self.N_extrap_high:-self.N_extrap_low]
-
-
-# class hankel(object):
-# 	def __init__(self, x, fx, nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0):
-# 		print('nu is required to be between (0.5-n) and 2.')
-# 		self.myfftlog = fftlog(x, np.sqrt(x)*fx, nu, N_extrap_low, N_extrap_high, c_window_width, N_pad)
-	
-# 	def hankel(self, n):
-# 		y, Fy = self.myfftlog.fftlog(n-0.5)
-# 		Fy *= np.sqrt(2*y/np.pi)
-# 		return y, Fy
-
+		return self.y1[self.N_extrap_high:self.N1-self.N_extrap_low], self.y2[self.N_extrap_high:self.N2-self.N_extrap_low], Fy1y2[self.N_extrap_high:self.N1-self.N_extrap_low, self.N_extrap_high:self.N2-self.N_extrap_low]
 
 
 ### Utility functions ####################
@@ -221,7 +207,7 @@ def g_l_smooth(l,z_array, binwidth_dlny, alpha_pow):
 	gl_smooth = 2.**z_array * gamma((l+z_array)/2.) / gamma((3.+l-z_array)/2.) * exp((alpha_pow - z_array)*binwidth_dlny -1. ) / (alpha_pow - z_array)
 	'''
 	gl = 2.**z_array * g_m_vals(l+0.5,z_array-1.5)
-	gl *= np.exp((alpha_pow - z_array)*binwidth_dlny -1. ) / (alpha_pow - z_array)
+	gl *= (np.exp((alpha_pow - z_array)*binwidth_dlny) -1. ) / (alpha_pow - z_array)
 	return gl
 
 ## Window function
@@ -265,7 +251,6 @@ def bilinear_extra_P(fk1k2, N_low, N_high):
 	N_high: number of points to extrapolate on the higher sides
 	'''
 	logfk1k2 = np.log(fk1k2) # This Extrapolation only works in log space
-	print(logfk1k2.shape)
 	h_grad_left = logfk1k2[:,1]-logfk1k2[:,0] # horizontal gradient left side
 	h_grad_right= logfk1k2[:,-1]-logfk1k2[:,-2] # horizontal gradient right side
 	add_left = np.arange(-N_low,0)
