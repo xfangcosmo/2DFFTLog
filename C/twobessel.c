@@ -218,7 +218,7 @@ void two_Bessel_binave(double *k1, double *k2, double **fk1k2, long N1, long N2,
 	Pb = malloc(N1 * N2* sizeof(double));
 	for(i=0; i<N1; i++) {
 		for(j=0; j<N2; j++) {
-			Pb[i*N2+j] = fk1k2[i][j] / pow(k1[i], config->nu1) / pow(k2[j], config->nu2) ;
+			Pb[i*N2+j] = fk1k2[i][j] / pow(k1[i], config->nu1 -0.5) / pow(k2[j], config->nu2 -0.5) ;
 		}
 	}
 
@@ -255,7 +255,7 @@ void two_Bessel_binave(double *k1, double *k2, double **fk1k2, long N1, long N2,
 
 	for(i=0; i<N1; i++) {
 		for(j=0; j<N2; j++) {
-			result[i][j] = out_ifft[i*N2 + j] * M_PI / (16.*N1*N2 * pow(r2[j], config->nu2 -0.5) * pow(r1[i], config->nu1 -0.5)) / s_d_lambda/s_d_lambda;
+			result[i][j] = out_ifft[i*N2 + j] / (8.*N1*N2 * pow(r2[j], config->nu2 -0.5) * pow(r1[i], config->nu1 -0.5)) / s_d_lambda/s_d_lambda;
 		}
 	}
 

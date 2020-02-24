@@ -59,7 +59,7 @@ subfig2.plot(r1, np.diag(Fr1r2), label='fftlog')
 plt.legend()
 plt.tight_layout()
 plt.show()
-# np.savetxt("out.txt", np.c_[r1, np.diag(Fr1r2)])
+np.savetxt("out.txt", np.c_[r1, np.diag(Fr1r2)])
 # exit()
 
 ################# Test two_sph_bessel_binave ##############
