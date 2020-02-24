@@ -30,10 +30,10 @@ nu = 1.01
 pk1k2 = np.diag(pk/dlnk)
 
 ################# Test two_sph_bessel ##############
-mytwobessel = twobessel(k, k, pk1k2, nu1=nu, nu2=nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0)
+mytwo_sph_bessel = two_sph_bessel(k, k, pk1k2, nu1=nu, nu2=nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0)
 
 t1 = time()
-r1, r2, Fr1r2 = mytwobessel.two_sph_bessel(ell1, ell2)
+r1, r2, Fr1r2 = mytwo_sph_bessel.two_sph_bessel(ell1, ell2)
 t2 = time()
 print('time: %fs'%(t2-t1))
 print('Testing two_sph_bessel')
@@ -64,7 +64,7 @@ plt.show()
 
 ################# Test two_sph_bessel_binave ##############
 t1 = time()
-r1, r2, Fr1r2 = mytwobessel.two_sph_bessel_binave(ell1, ell2, dlnk, dlnk)
+r1, r2, Fr1r2 = mytwo_sph_bessel.two_sph_bessel_binave(ell1, ell2, dlnk, dlnk)
 t2 = time()
 print('time: %fs'%(t2-t1))
 print('Testing two_sph_bessel_binave')
@@ -93,8 +93,9 @@ plt.show()
 
 
 ################# Test two_Bessel_binave ##############
+mytwo_Bessel = two_Bessel(k, k, pk1k2, nu1=nu, nu2=nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0)
 t1 = time()
-r1, r2, Fr1r2 = mytwobessel.two_Bessel_binave(ell1, ell2, dlnk, dlnk)
+r1, r2, Fr1r2 = mytwo_Bessel.two_Bessel_binave(ell1, ell2, dlnk, dlnk)
 t2 = time()
 print('time: %fs'%(t2-t1))
 print('Testing two_Bessel_binave')

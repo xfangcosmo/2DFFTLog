@@ -13,7 +13,7 @@ import numpy as np
 from scipy.special import gamma
 from numpy.fft import rfft2, irfft2
 
-class twobessel(object):
+class two_sph_bessel(object):
 
 	def __init__(self, x1, x2, fx1x2, nu1=1.01, nu2=1.01, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0):
 
@@ -141,6 +141,11 @@ class twobessel(object):
 
 		return self.y1[self.N_extrap_high:self.N1-self.N_extrap_low], self.y2[self.N_extrap_high:self.N2-self.N_extrap_low], Fy1y2[self.N_extrap_high:self.N1-self.N_extrap_low, self.N_extrap_high:self.N2-self.N_extrap_low]
 
+class two_Bessel(object):
+
+	def __init__(self, x1, x2, fx1x2, nu1=1.01, nu2=1.01, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0):
+		self.two_sph = two_sph_bessel(x1, x2, (fx1x2.T * np.sqrt(x1)).T * np.sqrt(x2), nu1, nu2, N_extrap_low, N_extrap_high, c_window_width, N_pad)
+
 	def two_Bessel_binave(self, ell1, ell2, binwidth_dlny1, binwidth_dlny2):
 		"""
 		Bin-averaging for 2D statistics: D = 2, alpha_pow = 2.5
@@ -148,20 +153,22 @@ class twobessel(object):
 		where J_\ell is the Bessel func of order ell.
 		array y is set as y[:] = 1/x[::-1]
 		"""
+		two_sph = self.two_sph
 		D = 2
 		s_d_lambda1 = (np.exp(D*binwidth_dlny1) -1. ) / D
 		s_d_lambda2 = (np.exp(D*binwidth_dlny2) -1. ) / D
 
-		g1 = g_l_smooth(ell1-0.5,self.z1, binwidth_dlny1, D+0.5) / s_d_lambda1
-		g2 = g_l_smooth(ell2-0.5,self.z2, binwidth_dlny2, D+0.5) / s_d_lambda2
+		g1 = g_l_smooth(ell1-0.5,two_sph.z1, binwidth_dlny1, D+0.5) / s_d_lambda1
+		g2 = g_l_smooth(ell2-0.5,two_sph.z2, binwidth_dlny2, D+0.5) / s_d_lambda2
 
-		mat = np.conj((self.c_mn*(self.x20*self.y20)**(-1j*self.eta_n) * g2).T * (self.x10*self.y10)**(-1j*self.eta_m) * g1).T
-		mat_right = mat[:,self.N2//2:]
-		mat_adjust = np.vstack((mat_right[self.N1//2:,:],mat_right[1:self.N1//2,:]))
+		mat = np.conj((two_sph.c_mn*(two_sph.x20*two_sph.y20)**(-1j*two_sph.eta_n) * g2).T * (two_sph.x10*two_sph.y10)**(-1j*two_sph.eta_m) * g1).T
+		mat_right = mat[:,two_sph.N2//2:]
+		mat_adjust = np.vstack((mat_right[two_sph.N1//2:,:],mat_right[1:two_sph.N1//2,:]))
 		# print(mat_adjust[0][1])
-		Fy1y2 = ((irfft2(mat_adjust) *np.pi / 16./ self.y2**(self.nu2-0.5)).T / self.y1**(self.nu1-0.5)).T
+		Fy1y2 = ((irfft2(mat_adjust) / 8./ two_sph.y2**(two_sph.nu2-0.5)).T / two_sph.y1**(two_sph.nu1-0.5)).T
 
-		return self.y1[self.N_extrap_high:self.N1-self.N_extrap_low], self.y2[self.N_extrap_high:self.N2-self.N_extrap_low], Fy1y2[self.N_extrap_high:self.N1-self.N_extrap_low, self.N_extrap_high:self.N2-self.N_extrap_low]
+		return two_sph.y1[two_sph.N_extrap_high:two_sph.N1-two_sph.N_extrap_low], two_sph.y2[two_sph.N_extrap_high:two_sph.N2-two_sph.N_extrap_low], Fy1y2[two_sph.N_extrap_high:two_sph.N1-two_sph.N_extrap_low, two_sph.N_extrap_high:two_sph.N2-two_sph.N_extrap_low]
+
 
 
 ### Utility functions ####################
