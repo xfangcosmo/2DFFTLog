@@ -1,9 +1,5 @@
 """
-python module for calculating integrals with 1 Bessel functions.
-This module contains:
--- FFTLog method for integrals with 1 spherical Bessel function;
--- integrals with 1 (cylindrical) Bessel function, i.e. Hankel transform;
--- window function (optional) for smoothing Fourier coefficients
+python module for calculating integrals with 2 Bessel / spherical Bessel functions.
 
 by Xiao Fang
 Feb 22, 2020
