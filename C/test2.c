@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 		for(j=0; j<Nk; j++) {
 			fk1k2[i][j] = 0.;
 		}
-		fk1k2[i][i] = fk[i]/dlnk;
+		fk1k2[i][i] = k[i]*k[i]*k[i] * fk[i]/dlnk;
 	}
 
 	double *r1, *r2, **result;
