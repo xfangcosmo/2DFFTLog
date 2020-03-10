@@ -26,14 +26,14 @@ int main(int argc, char const *argv[])
 
 	// double *ell, *fl;
 	long Nk = 3000;
-	double ell[Nk], fl[Nk];
+	double k[Nk], fk[Nk];
 
 	long linenum = 0;
 	while(!feof(IN) && (linenum<Nk)) {
-		fscanf(IN, "%lg %lg", &ell[linenum], &fl[linenum]);
+		fscanf(IN, "%lg %lg", &k[linenum], &fk[linenum]);
 		linenum++;
 	}
-	double dlnk = log(ell[1]/ell[0]);
+	double dlnk = log(k[1]/k[0]);
 	int i,j;
 	double **fk1k2;
 	fk1k2 = malloc(Nk * sizeof(double *));
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
 		for(j=0; j<Nk; j++) {
 			fk1k2[i][j] = 0.;
 		}
-		fk1k2[i][i] = fl[i]/dlnk;
+		fk1k2[i][i] = fk[i]/dlnk;
 	}
 
 	double *r1, *r2, **result;
@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
 	}
 
 	clock_t start = clock();
-	two_sph_bessel(ell, ell, fk1k2, Nk, Nk, &my_config, r1, r2, result);
+	two_sph_bessel(k, k, fk1k2, Nk, Nk, &my_config, r1, r2, result);
 	clock_t end = clock();
 	float seconds = (float)(end - start) / CLOCKS_PER_SEC;
 	printf("time:%f\n", seconds);

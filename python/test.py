@@ -27,7 +27,7 @@ ell1 = 0
 ell2 = 0
 nu = 1.01
 
-pk1k2 = np.diag(pk/dlnk)
+pk1k2 = np.diag(k**3*pk/dlnk)
 
 ################# Test two_sph_bessel ##############
 mytwo_sph_bessel = two_sph_bessel(k, k, pk1k2, nu1=nu, nu2=nu, N_extrap_low=0, N_extrap_high=0, c_window_width=0.25, N_pad=0)
