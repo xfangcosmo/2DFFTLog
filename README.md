@@ -1,4 +1,5 @@
 # 2D-FFTLog
+Xiao Fang
 
 2D-FFTLog code for efficiently computing integrals containing two Bessel or spherical Bessel functions, in the context of transforming covariance matrices from Fourier space to real space.
 
@@ -7,20 +8,20 @@ The code is *independently* written and tested in python ([./python/twobessel.py
 For non-bin averaged case, the transformed covariances are evaluated at points given by array `1/k`. For bin-averaged case, one needs to specify bin-width in log-space, but note that the output `r` array is always at bin edges.
 
 To run python examples, go to ([./python/](python)) directory, and run
-```
+```shell
 python test.py
 ```
 To run C examples, go to ([./C/](C)) directory, and compile with command
-```
+```shell
 make tests
 ```
 then run tests:
-```
+```shell
 ./test1
 ./test2
 ```
 
-See more details of the algorithm in [Fang et al (2020); arXiv:xxxx](https://arxiv.org/abs/xxxx), and please cite it if you find the algorithm or the code useful to your research.
+See more details of the algorithm in [Fang et al (2020); arXiv:2004.xxxx](https://arxiv.org/abs/2004.xxxx), and please cite it if you find the algorithm or the code useful to your research.
 
 Please feel free to use and adapt the code for your own purpose, and let me know if you are confused or find a bug (just open an [issue](https://github.com/xfangcosmo/2DFFTLog/issues)) or throw me an email (address shown on the profile page). 2DFFTLog is open source and distributed with the
 [MIT license](https://opensource.org/licenses/mit).
