@@ -34,6 +34,6 @@ Please feel free to use and adapt the code for your own purpose, and let me know
 Please cite the following paper if you use 2D-FFTLog in your
 research:
 
-  X. Fang, T. Eifler, E. Krause; *2D-FFTLog: Efficient computation of
+  [X. Fang, T. Eifler, E. Krause; *2D-FFTLog: Efficient computation of
     real space covariance matrices for galaxy clustering and weak
-    lensing*; arXiv:2004.xxxx
+    lensing*; arXiv:2004.04833](https://arxiv.org/abs/2004.04833)
