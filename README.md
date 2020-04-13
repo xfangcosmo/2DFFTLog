@@ -25,7 +25,7 @@ then run tests:
 ./test2
 ```
 
-See more details of the algorithm in [Fang et al (2020); arXiv:2004.xxxx](https://arxiv.org/abs/2004.xxxx).
+See more details of the algorithm in [Fang et al (2020); arXiv:2004.04833](https://arxiv.org/abs/2004.04833).
 
 Please feel free to use and adapt the code for your own purpose, and let me know if you are confused or find a bug (just open an [issue](https://github.com/xfangcosmo/2DFFTLog/issues)) or throw me an email (address shown on the profile page). 2DFFTLog is open source and distributed with the
 [MIT license](https://opensource.org/licenses/mit).
