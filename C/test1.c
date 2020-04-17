@@ -80,6 +80,10 @@ int main(int argc, char const *argv[])
 	fclose(IN);
 	free(r1);
 	free(r2);
+	for (int i = 0; i < Nk; ++i){
+		free(fk1k2[i]);
+		free(result[i]);
+	}
 	free(fk1k2);
 	free(result);
 
