@@ -196,6 +196,18 @@ double complex lngamma_lanczos(double complex z) {
 	return log(2*M_PI) /2.  + (z+0.5)*clog(t) -t + clog(x);
 }
 
+double complex ln_g_m_vals(double mu, double complex q) {
+/* similar routine as python version.
+use asymptotic expansion for large |mu+q| */
+	double complex asym_plus = (mu+1+ q)/2.;
+	double complex asym_minus= (mu+1- q)/2.;
+
+	return (asym_plus-0.5)*clog(asym_plus) - (asym_minus-0.5)*clog(asym_minus) - q \
+		+1./12 *(1./asym_plus - 1./asym_minus) \
+		+1./360.*(1./cpow(asym_minus,3) - 1./cpow(asym_plus,3)) \
+		+1./1260*(1./cpow(asym_plus,5) - 1./cpow(asym_minus,5));
+}
+
 void g_l(double l, double nu, double *eta, double complex *gl, long N) {
 /* z = nu + I*eta
 Calculate g_l = zln2 + lngamma( (l+nu)/2 + I*eta/2 ) - lngamma( (3+l-nu)/2 - I*eta/2 ) */
@@ -203,7 +215,12 @@ Calculate g_l = zln2 + lngamma( (l+nu)/2 + I*eta/2 ) - lngamma( (3+l-nu)/2 - I*e
 	double complex z;
 	for(i=0; i<N; i++) {
 		z = nu+I*eta[i];
-		gl[i] = cexp(z*log(2.) + lngamma_lanczos((l+z)/2.) - lngamma_lanczos((3.+l-z)/2.));
+		if(l+fabs(eta[i])<200){
+			// gl[i] = cexp(z*log(2.) + clog(gamma_lanczos((l+z)/2.) ) - clog(gamma_lanczos((3.+l-z)/2.)));
+			gl[i] = cexp(z*log(2.) + lngamma_lanczos((l+z)/2.) - lngamma_lanczos((3.+l-z)/2.) );	
+		}else{
+			gl[i] = cexp(z*log(2.) + ln_g_m_vals(l+0.5, z-1.5));
+		}
 	}
 }
 
@@ -214,7 +231,12 @@ Calculate g_l_smooth = g_l * exp((2.-z)*smooth_dlnr) / (2.-z) */
 	double complex z;
 	for(i=0; i<N; i++) {
 		z = nu+I*eta[i];
-		gl[i] = cexp(z*log(2.) + lngamma_lanczos((l+z)/2.) - lngamma_lanczos((3.+l-z)/2.));
+		if(l+fabs(eta[i])<200){
+			// gl[i] = cexp(z*log(2.) + clog(gamma_lanczos((l+z)/2.) ) - clog(gamma_lanczos((3.+l-z)/2.)));
+			gl[i] = cexp(z*log(2.) + lngamma_lanczos((l+z)/2.) - lngamma_lanczos((3.+l-z)/2.) );	
+		}else{
+			gl[i] = cexp(z*log(2.) + ln_g_m_vals(l+0.5, z-1.5));
+		}
 		gl[i] *= (cexp((alpha_pow-z)*smooth_dlnr)-1.)/(alpha_pow-z);
 	}
 }

@@ -26,3 +26,4 @@ void c_window_2d(double complex *out, double c_window_width, long halfN1, long h
 
 double complex gamma_lanczos(double complex z);
 double complex lngamma_lanczos(double complex z);
+double complex ln_g_m_vals(double mu, double complex q);
